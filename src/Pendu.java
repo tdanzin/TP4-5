@@ -10,13 +10,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.control.Tooltip;
-import javafx.scene.control.TitledPane;
-import javafx.scene.layout.Region;
 import javafx.scene.text.TextAlignment;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar.ButtonData ;
-import javafx.scene.control.ButtonType ;
+
 import java.util.List;
 import java.util.Arrays;
 import java.io.File;
@@ -106,9 +102,20 @@ public class Pendu extends Application {
     /**
      * @return le panel contenant le titre du jeu
      */
-    private Pane titre(){
-        // A implementer          
+    private Pane titre(){     
         Pane banniere = new Pane();
+        Label title = new Label("Jeu du Pendu");
+        ToggleGroup niveau = new ToggleGroup();
+        RadioButton fac = new RadioButton("Facile");
+        RadioButton med = new RadioButton("Médium");
+        RadioButton dif = new RadioButton("Difficile");
+        RadioButton exp = new RadioButton("Expert");
+        fac.setToggleGroup(niveau);
+        dif.setToggleGroup(niveau);
+        med.setToggleGroup(niveau);
+        exp.setToggleGroup(niveau);
+        VBox grNiveau = new VBox();
+        grNiveau.getChildren().addAll(fac, med, dif, exp);
         return banniere;
     }
 

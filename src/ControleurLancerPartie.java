@@ -18,10 +18,11 @@ public class ControleurLancerPartie implements EventHandler<ActionEvent> {
 
     /**
      * @param modelePendu modèle du jeu
-     * @param p vue du jeu
+     * @param vuePendu vue du jeu
      */
     public ControleurLancerPartie(MotMystere modelePendu, Pendu vuePendu) {
-        // A implémenter
+        this.modelePendu = modelePendu;
+        this.vuePendu = vuePendu;
     }
 
     /**

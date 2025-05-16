@@ -9,7 +9,7 @@ public class ControleurInfos implements EventHandler<ActionEvent> {
     private Pendu appliPendu;
 
     /**
-     * @param p vue du jeu
+     * @param appliPendu vue du jeu
      */
     public ControleurInfos(Pendu appliPendu) {
         this.appliPendu = appliPendu;
