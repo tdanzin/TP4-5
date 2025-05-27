@@ -77,6 +77,10 @@ public class Pendu extends Application {
      * le bouton qui permet de (lancer ou relancer une partie
      */ 
     private Button bJouer;
+    /**
+     * la scène de l'application
+     */
+    private Scene scene;
 
     /**
      * initialise les attributs (créer le modèle, charge les images, crée le chrono ...)
@@ -90,13 +94,14 @@ public class Pendu extends Application {
     }
 
     /**
-     * @return  le graphe de scène de la vue à partir de methodes précédantes
+     * @return  le graphe de scène de la vue à partir de methodes précédentes
      */
     private Scene laScene(){
         BorderPane fenetre = new BorderPane();
         fenetre.setTop(this.titre());
         fenetre.setCenter(this.panelCentral);
-        return new Scene(fenetre, 800, 1000);
+        this.scene = new Scene(fenetre, 800, 1000);
+        return this.scene;
     }
 
     /**
@@ -159,6 +164,7 @@ public class Pendu extends Application {
     private BorderPane fenetreAccueil(){
         BorderPane res = new BorderPane();
         Button start = new Button("Lancer une partie");
+
         ToggleGroup niveau = new ToggleGroup();
         RadioButton fac = new RadioButton("Facile");
         RadioButton med = new RadioButton("Médium");
@@ -168,10 +174,16 @@ public class Pendu extends Application {
         dif.setToggleGroup(niveau);
         med.setToggleGroup(niveau);
         exp.setToggleGroup(niveau);
+
         VBox grNiveau = new VBox();
         grNiveau.getChildren().addAll(fac, med, dif, exp);
+        TitledPane difficulte = new TitledPane("Niveau de difficulté", grNiveau);
+        BorderPane blocLevel = new BorderPane();
+        blocLevel.setTop(difficulte);
         res.setTop(start);
-        res.setCenter(grNiveau);
+        res.setCenter(blocLevel);
+        BorderPane.setMargin(start, new Insets(10));
+        BorderPane.setMargin(blocLevel, new Insets(10));
         return res;
     }
 
@@ -188,9 +200,10 @@ public class Pendu extends Application {
     }
 
     public void modeAccueil(){
-        BorderPane root = this.fenetreAccueil();
-        this.panelCentral = root;
-        this.laScene();
+        BorderPane accueil = new BorderPane();
+        accueil.setTop(this.titre());
+        accueil.setCenter(this.fenetreAccueil());
+        this.scene.setRoot(accueil);
     }
     
     public void modeJeu(){
