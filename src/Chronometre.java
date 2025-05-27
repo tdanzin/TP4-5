@@ -30,7 +30,7 @@ public class Chronometre extends Text{
      * Ce constructeur créer la Timeline, la KeyFrame et le contrôleur
      */
     public Chronometre(){
-        // A implémenter
+        this.timeline = new Timeline();
     }
 
     /**

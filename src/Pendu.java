@@ -86,7 +86,7 @@ public class Pendu extends Application {
         this.modelePendu = new MotMystere("/usr/share/dict/french", 3, 10, MotMystere.FACILE, 10);
         this.lesImages = new ArrayList<Image>();
         this.chargerImages("./img");
-        // A terminer d'implementer
+        this.chrono = new Chronometre();
     }
 
     /**
@@ -102,20 +102,35 @@ public class Pendu extends Application {
     /**
      * @return le panel contenant le titre du jeu
      */
-    private Pane titre(){     
-        Pane banniere = new Pane();
+    private BorderPane titre(){     
+        BorderPane banniere = new BorderPane();
         Label title = new Label("Jeu du Pendu");
-        ToggleGroup niveau = new ToggleGroup();
-        RadioButton fac = new RadioButton("Facile");
-        RadioButton med = new RadioButton("Médium");
-        RadioButton dif = new RadioButton("Difficile");
-        RadioButton exp = new RadioButton("Expert");
-        fac.setToggleGroup(niveau);
-        dif.setToggleGroup(niveau);
-        med.setToggleGroup(niveau);
-        exp.setToggleGroup(niveau);
-        VBox grNiveau = new VBox();
-        grNiveau.getChildren().addAll(fac, med, dif, exp);
+        title.setFont(Font.font("Arial", 32));
+
+        ImageView home = new ImageView(new Image("file:./img/home.png"));
+        home.setFitHeight(30.0);
+        home.setFitWidth(30.0);
+        this.boutonMaison = new Button("",home);
+        this.boutonMaison.setOnAction(new RetourAccueil(this.modelePendu, this));
+        
+        ImageView param = new ImageView(new Image("file:./img/parametres.png"));
+        param.setFitHeight(30.0);
+        param.setFitWidth(30.0);
+        this.boutonParametres = new Button("",param);
+        //this.boutonParametres.setOnAction(new ControleurParametres(this.modelePendu, this));
+
+        ImageView info = new ImageView(new Image("file:./img/info.png"));
+        info.setFitHeight(30.0);
+        info.setFitWidth(30.0);
+        Button infos = new Button("",info);
+        infos.setOnAction(new ControleurInfos(this));
+
+        banniere.setLeft(title);
+        HBox boutons = new HBox(this.boutonMaison, this.boutonParametres, infos);
+        banniere.setRight(boutons);
+        banniere.setPadding(new Insets(15));
+        banniere.setStyle("-fx-background-color: rgb(215, 211, 255);");
+        BorderPane.setAlignment(title, Pos.CENTER);
         return banniere;
     }
 
@@ -141,11 +156,24 @@ public class Pendu extends Application {
     // /**
      // * @return la fenêtre d'accueil sur laquelle on peut choisir les paramètres de jeu
      // */
-    // private Pane fenetreAccueil(){
-        // A implementer    
-        // Pane res = new Pane();
-        // return res;
-    // }
+    private BorderPane fenetreAccueil(){
+        BorderPane res = new BorderPane();
+        Button start = new Button("Lancer une partie");
+        ToggleGroup niveau = new ToggleGroup();
+        RadioButton fac = new RadioButton("Facile");
+        RadioButton med = new RadioButton("Médium");
+        RadioButton dif = new RadioButton("Difficile");
+        RadioButton exp = new RadioButton("Expert");
+        fac.setToggleGroup(niveau);
+        dif.setToggleGroup(niveau);
+        med.setToggleGroup(niveau);
+        exp.setToggleGroup(niveau);
+        VBox grNiveau = new VBox();
+        grNiveau.getChildren().addAll(fac, med, dif, exp);
+        res.setTop(start);
+        res.setCenter(grNiveau);
+        return res;
+    }
 
     /**
      * charge les images à afficher en fonction des erreurs
@@ -160,11 +188,15 @@ public class Pendu extends Application {
     }
 
     public void modeAccueil(){
-        // A implementer
+        BorderPane root = this.fenetreAccueil();
+        this.panelCentral = root;
+        this.laScene();
     }
     
     public void modeJeu(){
-        // A implementer
+        //BorderPane root = this.fenetreJeu();
+        //this.panelCentral = root;
+        //this.laScene();
     }
     
     public void modeParametres(){
