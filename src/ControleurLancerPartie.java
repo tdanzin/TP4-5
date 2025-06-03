@@ -36,8 +36,5 @@ public class ControleurLancerPartie implements EventHandler<ActionEvent> {
         if (reponse.isPresent() && reponse.get().equals(ButtonType.YES)){
             this.vuePendu.lancePartie();
         }
-        else{
-            
-        }
     }
 }

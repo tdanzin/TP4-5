@@ -21,7 +21,7 @@ public class ControleurLettres implements EventHandler<ActionEvent> {
      * @param modelePendu modèle du jeu
      * @param vuePendu vue du jeu
      */
-    ControleurLettres(MotMystere modelePendu, Pendu vuePendu){
+    public ControleurLettres(MotMystere modelePendu, Pendu vuePendu){
         this.modelePendu = modelePendu;
         this.vuePendu = vuePendu;
     }
@@ -36,10 +36,5 @@ public class ControleurLettres implements EventHandler<ActionEvent> {
         Button button = (Button) (actionEvent.getSource());
         this.modelePendu.essaiLettre(button.getText().charAt(0));
         this.vuePendu.majAffichage();
-        if (this.modelePendu.gagne()){
-            this.vuePendu.popUpMessageGagne();
-        } else if (this.modelePendu.perdu()){
-            this.vuePendu.popUpMessagePerdu();
-        }
     }
 }

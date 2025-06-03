@@ -43,6 +43,7 @@ public class ControleurChronometre implements EventHandler<ActionEvent> {
      * Remet la durée à 0
      */
     public void reset(){
-        // A implémenter
+        this.tempsEcoule = 0;
+        this.tempsPrec = 0;
     }
 }

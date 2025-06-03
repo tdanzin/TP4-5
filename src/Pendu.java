@@ -88,7 +88,7 @@ public class Pendu extends Application {
     @Override
     public void init() {
         this.modelePendu = new MotMystere("/usr/share/dict/french", 3, 10, MotMystere.FACILE, 10);
-        this.lesImages = new ArrayList<Image>();
+        this.lesImages = new ArrayList<>();
         this.chargerImages("./img");
         this.chrono = new Chronometre();
     }
@@ -122,7 +122,7 @@ public class Pendu extends Application {
         param.setFitHeight(30.0);
         param.setFitWidth(30.0);
         this.boutonParametres = new Button("",param);
-        //this.boutonParametres.setOnAction(new ControleurParametres(this.modelePendu, this));
+        this.boutonParametres.setOnAction(new ControleurParametres(this.modelePendu, this));
 
         ImageView info = new ImageView(new Image("file:./img/info.png"));
         info.setFitHeight(30.0);
@@ -158,7 +158,7 @@ public class Pendu extends Application {
         Text mot = this.motCrypte;
         ImageView pendu = this.dessin;
         ProgressBar bar = this.pg;
-        Clavier touches = this.clavier;
+        Clavier touches = new Clavier("ABCDEFGHIJKLMNOPQRSTUVWXYZ-", new ControleurLettres(modelePendu, this));
         center.getChildren().addAll(mot,pendu,bar,touches);
 
         VBox right = new VBox();
@@ -253,7 +253,17 @@ public class Pendu extends Application {
      * raffraichit l'affichage selon les données du modèle
      */
     public void majAffichage(){
-        // A implementer
+        this.chrono = this.getChrono();
+        this.dessin.setImage(this.lesImages.get(this.modelePendu.getNbErreursMax()-this.modelePendu.getNbErreursRestants()));
+        double progression = this.modelePendu.getMotCrypte().length()-this.modelePendu.getNbLettresRestantes()/this.modelePendu.getMotCrypte().length();
+        this.pg = new ProgressBar(progression);
+        this.motCrypte = new Text(this.modelePendu.getMotCrypte());
+        this.clavier.desactiveTouches(this.modelePendu.getLettresEssayees());
+        if (this.modelePendu.gagne()){
+            this.popUpMessageGagne();
+        } else if (this.modelePendu.perdu()){
+            this.popUpMessagePerdu();
+        }
     }
 
     /**
@@ -272,21 +282,21 @@ public class Pendu extends Application {
     }
         
     public Alert popUpReglesDuJeu(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Pour gagner, il vous faut décrypter le mot caché.\n ATTENTION ! Vous ne disposez que de 9 essais pour y parvenir.\n Faites également attention au chronomètre.");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Pour gagner, il vous faut décrypter le mot caché.\n ATTENTION ! Vous ne disposez que de 9 essais pour y parvenir.\n Faites également attention au chronomètre.", ButtonType.OK);
         alert.setTitle("Jeu du Pendu");
         alert.setHeaderText("Règles du jeu");
         return alert;
     }
     
     public Alert popUpMessageGagne(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Bravo ! Vous avez gagné !");     
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Bravo ! Vous avez gagné !",ButtonType.OK);     
         alert.setTitle("Jeu du Pendu"); 
         alert.setHeaderText("Vous avez gagné :)");  
         return alert;
     }
     
     public Alert popUpMessagePerdu(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Vous avez perdu\n Le mot à trouver était "+this.modelePendu.getMotATrouve());     
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Vous avez perdu\n Le mot à trouver était "+this.modelePendu.getMotATrouve(), ButtonType.OK);     
         alert.setTitle("Jeu du Pendu"); 
         alert.setHeaderText("Vous avez perdu :(");  
         return alert;
