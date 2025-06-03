@@ -272,8 +272,9 @@ public class Pendu extends Application {
     }
         
     public Alert popUpReglesDuJeu(){
-        // A implementer
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Pour gagner, il vous faut décrypter le mot caché.\n ATTENTION ! Vous ne disposez que de 9 essais pour y parvenir.\n Faites également attention au chronomètre.");
+        alert.setTitle("Jeu du Pendu");
+        alert.setHeaderText("Règles du jeu");
         return alert;
     }
     
