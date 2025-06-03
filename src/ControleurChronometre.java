@@ -25,7 +25,7 @@ public class ControleurChronometre implements EventHandler<ActionEvent> {
      * @param chrono Vue du chronomètre
      */
     public ControleurChronometre (Chronometre chrono){
-        this.chrono = chrono;
+        this.chrono = new Chronometre();
     }
 
     /**

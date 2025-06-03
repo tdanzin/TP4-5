@@ -10,5 +10,6 @@
         "/usr/share/openjfx/lib/javafx.media.jar",
         "/usr/share/openjfx/lib/javafx.swing.jar",
         "/usr/share/openjfx/lib/javafx.web.jar"
-    ]
+    ],
+    "java.debug.settings.onBuildFailureProceed": true
 }

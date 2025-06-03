@@ -198,7 +198,7 @@ public class Pendu extends Application {
         blocLevel.setTop(difficulte);
         res.setTop(this.bJouer);
         res.setCenter(blocLevel);
-        BorderPane.setMargin(start, new Insets(10));
+        BorderPane.setMargin(this.bJouer, new Insets(10));
         BorderPane.setMargin(blocLevel, new Insets(10));
         return res;
     }

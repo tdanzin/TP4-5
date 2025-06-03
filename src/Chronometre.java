@@ -31,6 +31,7 @@ public class Chronometre extends Text{
      */
     public Chronometre(){
         this.timeline = new Timeline();
+        
     }
 
     /**
