@@ -1,5 +1,5 @@
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Modèle pour le jeu du pendu.

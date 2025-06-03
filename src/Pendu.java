@@ -152,11 +152,26 @@ public class Pendu extends Application {
      // * @return la fenêtre de jeu avec le mot crypté, l'image, la barre
      // *         de progression et le clavier
      // */
-    // private Pane fenetreJeu(){
-        // A implementer
-        // Pane res = new Pane();
-        // return res;
-    // }
+    private BorderPane fenetreJeu(){
+        BorderPane res = new BorderPane();
+        VBox center = new VBox();
+        Text mot = this.motCrypte;
+        ImageView pendu = this.dessin;
+        ProgressBar bar = this.pg;
+        Clavier touches = this.clavier;
+        center.getChildren().addAll(mot,pendu,bar,touches);
+
+        VBox right = new VBox();
+        Text niv = new Text("Niveau "+this.leNiveau);
+        Chronometre chronometre = this.chrono;
+        right.getChildren().addAll(niv,chronometre,this.bJouer);
+
+        center.setPadding(new Insets(10));
+        right.setPadding(new Insets(20));
+        res.setCenter(center);
+        res.setRight(right);
+        return res;
+    }
 
     // /**
      // * @return la fenêtre d'accueil sur laquelle on peut choisir les paramètres de jeu
@@ -174,6 +189,7 @@ public class Pendu extends Application {
         dif.setToggleGroup(niveau);
         med.setToggleGroup(niveau);
         exp.setToggleGroup(niveau);
+        fac.setSelected(true);
 
         VBox grNiveau = new VBox();
         grNiveau.getChildren().addAll(fac, med, dif, exp);
@@ -202,14 +218,23 @@ public class Pendu extends Application {
     public void modeAccueil(){
         BorderPane accueil = new BorderPane();
         accueil.setTop(this.titre());
+        this.boutonMaison.setDisable(true);
+        this.boutonParametres.setDisable(false);
         accueil.setCenter(this.fenetreAccueil());
+        boutonMaison.disableProperty();
+        boutonParametres.setDisable(false);
         this.scene.setRoot(accueil);
     }
     
     public void modeJeu(){
-        //BorderPane root = this.fenetreJeu();
-        //this.panelCentral = root;
-        //this.laScene();
+        BorderPane jeu = new BorderPane();
+        jeu.setTop(this.titre());
+        this.boutonMaison.setDisable(false);
+        this.boutonParametres.setDisable(true);
+        jeu.setCenter(this.fenetreJeu());
+        boutonParametres.disableProperty();
+        boutonMaison.setDisable(false);
+        this.scene.setRoot(jeu);
     }
     
     public void modeParametres(){
@@ -218,7 +243,9 @@ public class Pendu extends Application {
 
     /** lance une partie */
     public void lancePartie(){
-        // A implementer
+        this.modelePendu.setMotATrouver();
+        this.chrono.resetTime();
+        this.dessin.setImage(lesImages.get(0));
     }
 
     /**
