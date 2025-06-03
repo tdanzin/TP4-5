@@ -164,6 +164,7 @@ public class Pendu extends Application {
         VBox right = new VBox();
         Text niv = new Text("Niveau "+this.leNiveau);
         Chronometre chronometre = this.chrono;
+        this.bJouer.setText("Nouveau mot");
         right.getChildren().addAll(niv,chronometre,this.bJouer);
 
         center.setPadding(new Insets(10));
@@ -178,8 +179,7 @@ public class Pendu extends Application {
      // */
     private BorderPane fenetreAccueil(){
         BorderPane res = new BorderPane();
-        Button start = new Button("Lancer une partie");
-
+        this.bJouer.setText("Lancer une partie");
         ToggleGroup niveau = new ToggleGroup();
         RadioButton fac = new RadioButton("Facile");
         RadioButton med = new RadioButton("Médium");
@@ -196,7 +196,7 @@ public class Pendu extends Application {
         TitledPane difficulte = new TitledPane("Niveau de difficulté", grNiveau);
         BorderPane blocLevel = new BorderPane();
         blocLevel.setTop(difficulte);
-        res.setTop(start);
+        res.setTop(this.bJouer);
         res.setCenter(blocLevel);
         BorderPane.setMargin(start, new Insets(10));
         BorderPane.setMargin(blocLevel, new Insets(10));
@@ -246,6 +246,7 @@ public class Pendu extends Application {
         this.modelePendu.setMotATrouver();
         this.chrono.resetTime();
         this.dessin.setImage(lesImages.get(0));
+        this.modeJeu();
     }
 
     /**
