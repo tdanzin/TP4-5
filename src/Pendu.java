@@ -273,19 +273,21 @@ public class Pendu extends Application {
         
     public Alert popUpReglesDuJeu(){
         // A implementer
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "");
         return alert;
     }
     
     public Alert popUpMessageGagne(){
-        // A implementer
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);        
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Bravo ! Vous avez gagné !");     
+        alert.setTitle("Jeu du Pendu"); 
+        alert.setHeaderText("Vous avez gagné :)");  
         return alert;
     }
     
     public Alert popUpMessagePerdu(){
-        // A implementer    
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Vous avez perdu\n Le mot à trouver était "+this.modelePendu.getMotATrouve());     
+        alert.setTitle("Jeu du Pendu"); 
+        alert.setHeaderText("Vous avez perdu :(");  
         return alert;
     }
 
