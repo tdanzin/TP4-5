@@ -26,6 +26,7 @@ public class Clavier extends TilePane{
      * @param tailleLigne nombre de touches par ligne
      */
     public Clavier(String touches, EventHandler<ActionEvent> actionTouches) {
+        clavier = new ArrayList<>();
         for (int i=0; i<touches.length(); i++){
             String lettre = ""+touches.charAt(i);
             Button bouton = new Button(lettre);
