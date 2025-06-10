@@ -23,6 +23,10 @@ public class Chronometre extends Text{
      * le contrôleur associé au chronomètre
      */
     private ControleurChronometre actionTemps;
+    /**
+     * le temps réel au début de la partie
+     */
+    private long timeDeb;
 
     /**
      * Constructeur permettant de créer le chronomètre
@@ -30,14 +34,14 @@ public class Chronometre extends Text{
      * Ce constructeur créer la Timeline, la KeyFrame et le contrôleur
      */
     public Chronometre() {
-        this.setText("0:0:0");
+        this.setText("0:0");
+        this.timeDeb = System.currentTimeMillis();
         this.setFont(new Font(16));
         this.setTextAlignment(TextAlignment.CENTER);
         this.actionTemps = new ControleurChronometre(this);
         this.keyFrame = new KeyFrame(Duration.seconds(1), this.actionTemps);
         this.timeline = new Timeline(this.keyFrame);
         this.timeline.setCycleCount(Animation.INDEFINITE);
-        this.timeline.play();
     }
 
     /**
@@ -46,7 +50,7 @@ public class Chronometre extends Text{
     * @param tempsMillisec la durée depuis à afficher
     */
     public void setTime(long tempsMillisec) {
-        long tempsSecondes = tempsMillisec / 1000;
+        long tempsSecondes = (tempsMillisec-this.timeDeb) / 1000;
         long minutes = tempsSecondes / 60;
         long secondes = tempsSecondes % 60;
         if (minutes < 1){
@@ -75,6 +79,7 @@ public class Chronometre extends Text{
     * Permet de remettre le chronomètre à 0
     */
     public void resetTime() {
+        this.timeDeb = System.currentTimeMillis();
         this.actionTemps.reset();
         this.setText("0 s");
     }

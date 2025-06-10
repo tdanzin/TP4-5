@@ -98,6 +98,7 @@ public class Pendu extends Application {
         this.pg = new ProgressBar(0);
         this.clavier = new Clavier("ABCDEFGHIJKLMNOPQRSTUVWXYZ-", new ControleurLettres(modelePendu, this));
         this.motCrypte = new Text(this.modelePendu.getMotCrypte());
+        this.motCrypte.setFont(new Font(20));
         this.niveaux = Arrays.asList("Facile","Médium","Difficile","Expert");
     }
 
@@ -151,6 +152,7 @@ public class Pendu extends Application {
      // * @return le panel du chronomètre
      // */
     private TitledPane leChrono(){
+        this.chrono.start();
         TitledPane res = new TitledPane("Chronomètre", this.chrono);
         return res;
     }
