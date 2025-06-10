@@ -29,38 +29,53 @@ public class Chronometre extends Text{
      * avec un label initialisé à "0:0:0"
      * Ce constructeur créer la Timeline, la KeyFrame et le contrôleur
      */
-    public Chronometre(){
-        this.timeline = new Timeline();
-        
+    public Chronometre() {
+        this.setText("0:0:0");
+        this.setFont(new Font(16));
+        this.setTextAlignment(TextAlignment.CENTER);
+        this.actionTemps = new ControleurChronometre(this);
+        this.keyFrame = new KeyFrame(Duration.seconds(1), this.actionTemps);
+        this.timeline = new Timeline(this.keyFrame);
+        this.timeline.setCycleCount(Animation.INDEFINITE);
+        this.timeline.play();
     }
 
     /**
-     * Permet au controleur de mettre à jour le text
-     * la durée est affichée sous la forme m:s
-     * @param tempsMillisec la durée depuis à afficher
-     */
-    public void setTime(long tempsMillisec){
-        // A implémenter
+    * Permet au contrôleur de mettre à jour le texte
+    * la durée est affichée sous la forme m:s
+    * @param tempsMillisec la durée depuis à afficher
+    */
+    public void setTime(long tempsMillisec) {
+        long tempsSecondes = tempsMillisec / 1000;
+        long minutes = tempsSecondes / 60;
+        long secondes = tempsSecondes % 60;
+        if (minutes < 1){
+            this.setText(secondes+" s");
+        }
+        else {
+            this.setText(minutes+" min "+secondes+" s");
+        }
     }
 
     /**
-     * Permet de démarrer le chronomètre
-     */
-    public void start(){
-        // A implémenter
+    * Permet de démarrer le chronomètre
+    */
+    public void start() {
+        this.timeline.play();
     }
 
     /**
-     * Permet d'arrêter le chronomètre
-     */
-    public void stop(){
-        // A implémenter
+    * Permet d'arrêter le chronomètre
+    */
+    public void stop() {
+        this.timeline.stop();
     }
 
     /**
-     * Permet de remettre le chronomètre à 0
-     */
-    public void resetTime(){
-        // A implémenter
+    * Permet de remettre le chronomètre à 0
+    */
+    public void resetTime() {
+        this.actionTemps.reset();
+        this.setText("0 s");
     }
 }

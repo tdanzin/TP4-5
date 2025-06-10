@@ -98,6 +98,7 @@ public class Pendu extends Application {
         this.pg = new ProgressBar(0);
         this.clavier = new Clavier("ABCDEFGHIJKLMNOPQRSTUVWXYZ-", new ControleurLettres(modelePendu, this));
         this.motCrypte = new Text(this.modelePendu.getMotCrypte());
+        this.niveaux = Arrays.asList("Facile","Médium","Difficile","Expert");
     }
 
     /**
@@ -149,30 +150,33 @@ public class Pendu extends Application {
     // /**
      // * @return le panel du chronomètre
      // */
-    // private TitledPane leChrono(){
-        // A implementer
-        // TitledPane res = new TitledPane();
-        // return res;
-    // }
+    private TitledPane leChrono(){
+        TitledPane res = new TitledPane("Chronomètre", this.chrono);
+        return res;
+    }
 
     // /**
      // * @return la fenêtre de jeu avec le mot crypté, l'image, la barre
      // *         de progression et le clavier
      // */
     private BorderPane fenetreJeu(){
+
+        this.modelePendu = new MotMystere("/usr/share/dict/french", 3, 10, this.modelePendu.getNiveau(), 10);
         BorderPane res = new BorderPane();
         VBox center = new VBox();
         center.getChildren().addAll(this.motCrypte,this.dessin,this.pg,this.clavier);
 
         VBox right = new VBox();
-        this.leNiveau = new Text(this.niveaux.get(this.modelePendu.getNiveau()));
-        Text niv = new Text("Niveau "+this.leNiveau);
-        Chronometre chronometre = this.chrono;
+        this.leNiveau = new Text("Niveau "+this.niveaux.get(this.modelePendu.getNiveau()));
         this.bJouer.setText("Nouveau mot");
-        right.getChildren().addAll(niv,chronometre,this.bJouer);
+        right.getChildren().addAll(this.leNiveau,this.leChrono(),this.bJouer);
 
-        center.setPadding(new Insets(10));
+        center.setPadding(new Insets(60));
         right.setPadding(new Insets(20));
+        BorderPane.setMargin(this.leChrono(), new Insets(10));
+        BorderPane.setMargin(this.bJouer, new Insets(10));
+        BorderPane.setMargin(this.dessin, new Insets(10));
+        BorderPane.setMargin(this.pg, new Insets(10));
         res.setCenter(center);
         res.setRight(right);
         return res;
@@ -186,22 +190,16 @@ public class Pendu extends Application {
         this.bJouer.setText("Lancer une partie");
         this.bJouer.setOnAction(new ControleurLancerPartie(modelePendu, this));
         ToggleGroup niveau = new ToggleGroup();
-        RadioButton fac = new RadioButton("Facile");
-        fac.setOnAction(new ControleurNiveau(modelePendu));
-        RadioButton med = new RadioButton("Médium");
-        med.setOnAction(new ControleurNiveau(modelePendu));
-        RadioButton dif = new RadioButton("Difficile");
-        dif.setOnAction(new ControleurNiveau(modelePendu));
-        RadioButton exp = new RadioButton("Expert");
-        exp.setOnAction(new ControleurNiveau(modelePendu));
-        fac.setToggleGroup(niveau);
-        dif.setToggleGroup(niveau);
-        med.setToggleGroup(niveau);
-        exp.setToggleGroup(niveau);
-        fac.setSelected(true);
-
         VBox grNiveau = new VBox();
-        grNiveau.getChildren().addAll(fac, med, dif, exp);
+        for (int i=0; i<this.niveaux.size(); i++){
+            RadioButton niv = new RadioButton(this.niveaux.get(i)); 
+            niv.setOnAction(new ControleurNiveau(modelePendu));
+            niv.setToggleGroup(niveau);
+            if (i==0){
+                niv.setSelected(true);
+            }
+            grNiveau.getChildren().add(niv);
+        }
         TitledPane difficulte = new TitledPane("Niveau de difficulté", grNiveau);
         BorderPane blocLevel = new BorderPane();
         blocLevel.setTop(difficulte);
@@ -234,7 +232,7 @@ public class Pendu extends Application {
         this.scene.setRoot(fenetre);
     }
     
-    public void modeJeu(){
+    public void modeJeu(){ 
         this.panelCentral=this.fenetreJeu();
         BorderPane fenetre = new BorderPane();
         fenetre.setCenter(this.panelCentral);
@@ -251,7 +249,7 @@ public class Pendu extends Application {
     /** lance une partie */
     public void lancePartie(){
         this.modelePendu.setMotATrouver();
-        //this.chrono.resetTime();
+        this.chrono.resetTime();
         this.modeJeu();
     }
 
@@ -277,8 +275,7 @@ public class Pendu extends Application {
      * @return le chronomètre du jeu
      */
     public Chronometre getChrono(){
-        // A implémenter
-        return null; // A enlever
+        return this.chrono;
     }
 
     public Alert popUpPartieEnCours(){
@@ -288,7 +285,7 @@ public class Pendu extends Application {
     }
         
     public Alert popUpReglesDuJeu(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Pour gagner, il vous faut décrypter le mot caché.\n ATTENTION ! Vous ne disposez que de 9 essais.", ButtonType.OK);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Pour gagner, il vous faut décrypter le mot caché.\n ATTENTION ! Vous ne disposez que de 10 essais.", ButtonType.OK);
         alert.setTitle("Jeu du Pendu");
         alert.setHeaderText("Règles du jeu");
         return alert;
