@@ -14,9 +14,11 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.control.ButtonBar.ButtonData ;
 
 import java.util.List;
+import java.util.Set;
 import java.util.Arrays;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import javax.imageio.plugins.tiff.TIFFTagSet;
 import javax.swing.text.html.ImageView;
 
@@ -84,6 +86,8 @@ public class Pendu extends Application {
      */
     private Scene scene;
 
+    private Set<String> ensTouches;
+
     /**
      * initialise les attributs (créer le modèle, charge les images, crée le chrono ...)
      */
@@ -96,10 +100,11 @@ public class Pendu extends Application {
         this.bJouer = new Button();
         this.dessin = new ImageView(this.lesImages.get(0));
         this.pg = new ProgressBar(0);
-        this.clavier = new Clavier("ABCDEFGHIJKLMNOPQRSTUVWXYZ-", new ControleurLettres(modelePendu, this));
+        this.clavier = new Clavier("ABCDEFGHIJKLMNOPQRSTUVWXYZ-", new ControleurLettres(this.modelePendu, this));
         this.motCrypte = new Text(this.modelePendu.getMotCrypte());
         this.motCrypte.setFont(new Font(20));
         this.niveaux = Arrays.asList("Facile","Médium","Difficile","Expert");
+        this.ensTouches = new HashSet<>();
     }
 
     /**
@@ -163,22 +168,23 @@ public class Pendu extends Application {
      // */
     private BorderPane fenetreJeu(){
 
-        this.modelePendu = new MotMystere("/usr/share/dict/french", 3, 10, this.modelePendu.getNiveau(), 10);
         BorderPane res = new BorderPane();
         VBox center = new VBox();
+        this.motCrypte.setTextAlignment(TextAlignment.CENTER);
         center.getChildren().addAll(this.motCrypte,this.dessin,this.pg,this.clavier);
 
         VBox right = new VBox();
         this.leNiveau = new Text("Niveau "+this.niveaux.get(this.modelePendu.getNiveau()));
+        this.leNiveau.setFont(new Font(20));
         this.bJouer.setText("Nouveau mot");
         right.getChildren().addAll(this.leNiveau,this.leChrono(),this.bJouer);
 
         center.setPadding(new Insets(60));
         right.setPadding(new Insets(20));
-        BorderPane.setMargin(this.leChrono(), new Insets(10));
-        BorderPane.setMargin(this.bJouer, new Insets(10));
-        BorderPane.setMargin(this.dessin, new Insets(10));
-        BorderPane.setMargin(this.pg, new Insets(10));
+        VBox.setMargin(this.leChrono(), new Insets(10));
+        VBox.setMargin(this.bJouer, new Insets(10));
+        VBox.setMargin(this.dessin, new Insets(10));
+        VBox.setMargin(this.pg, new Insets(10));
         res.setCenter(center);
         res.setRight(right);
         return res;
@@ -224,6 +230,11 @@ public class Pendu extends Application {
         }
     }
 
+    public void addTouches(String touche){
+        this.ensTouches.add(touche);
+        this.clavier.desactiveTouches(ensTouches);
+    }
+
     public void modeAccueil(){
         this.panelCentral=this.fenetreAccueil();
         BorderPane fenetre = new BorderPane();
@@ -235,6 +246,8 @@ public class Pendu extends Application {
     }
     
     public void modeJeu(){ 
+        this.modelePendu = new MotMystere("/usr/share/dict/french", 3, 10, this.modelePendu.getNiveau(), 10);
+        this.motCrypte.setText(this.modelePendu.getMotCrypte());
         this.panelCentral=this.fenetreJeu();
         BorderPane fenetre = new BorderPane();
         fenetre.setCenter(this.panelCentral);
@@ -250,6 +263,7 @@ public class Pendu extends Application {
 
     /** lance une partie */
     public void lancePartie(){
+        this.majAffichage();
         this.modelePendu.setMotATrouver();
         this.chrono.resetTime();
         this.modeJeu();
@@ -259,12 +273,10 @@ public class Pendu extends Application {
      * raffraichit l'affichage selon les données du modèle
      */
     public void majAffichage(){
-        this.chrono = this.getChrono();
         this.dessin.setImage(this.lesImages.get(this.modelePendu.getNbErreursMax()-this.modelePendu.getNbErreursRestants()));
-        double progression = this.modelePendu.getMotCrypte().length()-this.modelePendu.getNbLettresRestantes()/this.modelePendu.getMotCrypte().length();
+        double progression = 1-this.modelePendu.getNbErreursRestants()/this.modelePendu.getNbErreursMax();
         this.pg = new ProgressBar(progression);
-        this.motCrypte = new Text(this.modelePendu.getMotCrypte());
-        this.clavier.desactiveTouches(this.modelePendu.getLettresEssayees());
+        this.motCrypte.setText(this.modelePendu.getMotCrypte());
         if (this.modelePendu.gagne()){
             this.popUpMessageGagne();
         } else if (this.modelePendu.perdu()){
