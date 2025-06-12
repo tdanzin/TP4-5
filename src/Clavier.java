@@ -32,7 +32,6 @@ public class Clavier extends TilePane{
         clavier = new ArrayList<>();
         for (int i=0; i<touches.length(); i++){
             String lettre = ""+touches.charAt(i);
-            Circle c = new Circle(10);
             Button bouton = new Button(lettre);
             bouton.setOnAction(actionTouches);
             this.getChildren().add(bouton);

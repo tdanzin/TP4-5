@@ -19,8 +19,6 @@ import java.util.Arrays;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
-import javax.imageio.plugins.tiff.TIFFTagSet;
-import javax.swing.text.html.ImageView;
 
 
 /**
@@ -264,6 +262,8 @@ public class Pendu extends Application {
     /** lance une partie */
     public void lancePartie(){
         this.majAffichage();
+        this.clavier = new Clavier("ABCDEFGHIJKLMNOPQRSTUVWXYZ-", new ControleurLettres(this.modelePendu, this));
+        this.ensTouches.removeAll(this.ensTouches);
         this.modelePendu.setMotATrouver();
         this.chrono.resetTime();
         this.modeJeu();
